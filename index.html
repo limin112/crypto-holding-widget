@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Holdings Widget</title>
     <style>
         * {
@@ -18,12 +20,15 @@
         .container {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         #holdingWidget {
             border: 2px solid #333;
             padding: 20px;
-            width: 450px;
+            width: 100%;
+            max-width: 450px;
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -159,10 +164,33 @@
         #settingsPanel {
             border: 2px solid #333;
             padding: 20px;
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default */
+        }
+        
+        #settingsPanel.show {
+            display: block;
+        }
+        
+        .settings-toggle {
+            padding: 8px 16px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        
+        .settings-toggle:hover {
+            background: #555;
         }
         
         .settings-title {
@@ -233,6 +261,98 @@
         
         .btn-reset:hover {
             background: #d0d0d0;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                gap: 15px;
+            }
+            
+            #holdingWidget {
+                padding: 15px;
+            }
+            
+            h3 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            h3 > div {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .holding-item {
+                font-size: 14px;
+            }
+            
+            .symbol {
+                font-size: 16px;
+            }
+            
+            .total {
+                font-size: 16px;
+            }
+            
+            #settingsPanel {
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            .settings-toggle {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            #holdingWidget {
+                padding: 12px;
+                border-width: 1px;
+            }
+            
+            h3 {
+                font-size: 16px;
+            }
+            
+            .refresh-button {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+            
+            .holding-item {
+                padding: 8px;
+                font-size: 13px;
+            }
+            
+            .symbol {
+                font-size: 15px;
+            }
+            
+            .value {
+                font-size: 12px;
+            }
+            
+            .price-change {
+                font-size: 11px;
+            }
+            
+            .total {
+                font-size: 15px;
+            }
+            
+            .cny-value {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -310,6 +430,8 @@
                 Total Value (USD): <span id="total_value" class="loading">Loading...</span>
                 <div class="cny-value" id="total_cny"></div>
             </div>
+            
+            <button class="settings-toggle" onclick="toggleSettings()">⚙️ Settings</button>
         </div>
         
         <div id="settingsPanel">
@@ -564,6 +686,11 @@
 
         function manualRefresh() {
             updateValues();
+        }
+        
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('show');
         }
 
         loadSettings();
