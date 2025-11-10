@@ -111,6 +111,29 @@
             margin-top: 4px;
         }
         
+        .subtotal {
+            font-weight: bold;
+            color: #007368;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .delete-coin {
+            padding: 4px 8px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+        
+        .delete-coin:hover {
+            background: #dc2626;
+        }
+        
         .price-change {
             font-size: 12px;
             font-weight: bold;
@@ -191,6 +214,45 @@
         
         .settings-toggle:hover {
             background: #555;
+        }
+        
+        .add-coin-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .add-coin-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .add-coin-input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .btn-add-coin {
+            width: 100%;
+            padding: 8px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-add-coin:hover {
+            background: #059669;
         }
         
         .settings-title {
@@ -366,64 +428,8 @@
                 </div>
             </h3>
             
-            <div class="holding-item">
-                <div class="holding-item-left">
-                    <a href="https://www.binance.com/trade/ZEC_USDT" target="_blank" class="holding-item-link">
-                        <span class="symbol">ZEC</span>: <span class="amount" id="zec_amount">200</span>
-                        <span class="link-icon">🔗</span>
-                    </a>
-                    <div class="value" id="zec_price" class="loading">Loading...</div>
-                    <div class="price-change" id="zec_change"></div>
-                    <div class="value" id="zec_updated" style="font-size: 11px; color: #999;"></div>
-                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/ZEC_USDT', '_blank')">
-                        📊 Trade on Binance
-                    </div>
-                </div>
-            </div>
-            
-            <div class="holding-item">
-                <div class="holding-item-left">
-                    <a href="https://www.binance.com/trade/BTC_USDT" target="_blank" class="holding-item-link">
-                        <span class="symbol">BTC</span>: <span class="amount" id="btc_amount">1</span>
-                        <span class="link-icon">🔗</span>
-                    </a>
-                    <div class="value" id="btc_price" class="loading">Loading...</div>
-                    <div class="price-change" id="btc_change"></div>
-                    <div class="value" id="btc_updated" style="font-size: 11px; color: #999;"></div>
-                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/BTC_USDT', '_blank')">
-                        📊 Trade on Binance
-                    </div>
-                </div>
-            </div>
-            
-            <div class="holding-item">
-                <div class="holding-item-left">
-                    <a href="https://www.binance.com/trade/XRP_USDT" target="_blank" class="holding-item-link">
-                        <span class="symbol">XRP</span>: <span class="amount" id="xrp_amount">20</span>
-                        <span class="link-icon">🔗</span>
-                    </a>
-                    <div class="value" id="xrp_price" class="loading">Loading...</div>
-                    <div class="price-change" id="xrp_change"></div>
-                    <div class="value" id="xrp_updated" style="font-size: 11px; color: #999;"></div>
-                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/XRP_USDT', '_blank')">
-                        📊 Trade on Binance
-                    </div>
-                </div>
-            </div>
-            
-            <div class="holding-item">
-                <div class="holding-item-left">
-                    <a href="https://www.binance.com/trade/SC_USDT" target="_blank" class="holding-item-link">
-                        <span class="symbol">SC</span>: <span class="amount" id="sc_amount">5000</span>
-                        <span class="link-icon">🔗</span>
-                    </a>
-                    <div class="value" id="sc_price" class="loading">Loading...</div>
-                    <div class="price-change" id="sc_change"></div>
-                    <div class="value" id="sc_updated" style="font-size: 11px; color: #999;"></div>
-                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/SC_USDT', '_blank')">
-                        📊 Trade on Binance
-                    </div>
-                </div>
+            <div id="holdingsContainer">
+                <!-- Holdings will be dynamically rendered here -->
             </div>
             
             <div class="total">
@@ -437,29 +443,21 @@
         <div id="settingsPanel">
             <div class="settings-title">⚙️ Settings</div>
             
-            <div class="setting-item">
-                <label class="setting-label">ZEC Amount</label>
-                <input type="number" id="setting_zec" class="setting-input" value="200">
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">BTC Amount</label>
-                <input type="number" id="setting_btc" class="setting-input" value="1">
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">XRP Amount</label>
-                <input type="number" id="setting_xrp" class="setting-input" value="20">
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">SC Amount</label>
-                <input type="number" id="setting_sc" class="setting-input" value="5000">
+            <div id="settingsContainer">
+                <!-- Settings will be dynamically rendered here -->
             </div>
             
             <div class="button-group">
                 <button class="btn btn-save" onclick="saveSettings()">Save</button>
                 <button class="btn btn-reset" onclick="resetSettings()">Reset</button>
+            </div>
+            
+            <div class="add-coin-section">
+                <div class="add-coin-title">➕ Add New Coin</div>
+                <input type="text" id="new_coin_symbol" class="add-coin-input" placeholder="Coin Symbol (e.g., BTC)">
+                <input type="text" id="new_coin_id" class="add-coin-input" placeholder="CoinGecko ID (e.g., bitcoin)">
+                <input type="number" id="new_coin_amount" class="add-coin-input" placeholder="Amount">
+                <button class="btn-add-coin" onclick="addNewCoin()">Add Coin</button>
             </div>
         </div>
     </div>
@@ -467,10 +465,10 @@
     <script>
         const USD_TO_CNY_RATE = 7.2; // Approximate exchange rate
         let holdings = {
-            'zcash': { amount: 200, id: 'zec' },
-            'bitcoin': { amount: 1, id: 'btc' },
-            'ripple': { amount: 20, id: 'xrp' },
-            'siacoin': { amount: 5000, id: 'sc' }
+            'zcash': { amount: 200, id: 'zec', symbol: 'ZEC' },
+            'bitcoin': { amount: 1, id: 'btc', symbol: 'BTC' },
+            'ripple': { amount: 20, id: 'xrp', symbol: 'XRP' },
+            'siacoin': { amount: 5000, id: 'sc', symbol: 'SC' }
         };
         let previousPrices = {}; // Store previous prices for comparison
         let lastUpdateTime = {}; // Store last update timestamp for each coin
@@ -479,12 +477,7 @@
         function loadSettings() {
             const saved = localStorage.getItem('cryptoHoldings');
             if (saved) {
-                const data = JSON.parse(saved);
-                holdings['zcash'].amount = data.zec || 200;
-                holdings['bitcoin'].amount = data.btc || 1;
-                holdings['ripple'].amount = data.xrp || 20;
-                holdings['siacoin'].amount = data.sc || 5000;
-                updateDisplay();
+                holdings = JSON.parse(saved);
             }
             
             // Load previous prices from localStorage
@@ -492,49 +485,142 @@
             if (savedPrices) {
                 previousPrices = JSON.parse(savedPrices);
             }
+            
+            renderHoldings();
+            renderSettings();
         }
-
-        function updateDisplay() {
-            document.getElementById('zec_amount').innerText = holdings['zcash'].amount;
-            document.getElementById('btc_amount').innerText = holdings['bitcoin'].amount;
-            document.getElementById('xrp_amount').innerText = holdings['ripple'].amount;
-            document.getElementById('sc_amount').innerText = holdings['siacoin'].amount;
+        
+        function renderHoldings() {
+            const container = document.getElementById('holdingsContainer');
+            container.innerHTML = '';
+            
+            Object.entries(holdings).forEach(([coinId, data]) => {
+                const holdingDiv = document.createElement('div');
+                holdingDiv.className = 'holding-item';
+                holdingDiv.id = `holding_${data.id}`;
+                
+                holdingDiv.innerHTML = `
+                    <div class="holding-item-left">
+                        <a href="https://www.binance.com/trade/${data.symbol}_USDT" target="_blank" class="holding-item-link">
+                            <span class="symbol">${data.symbol}</span>: <span class="amount" id="${data.id}_amount">${data.amount}</span>
+                            <span class="link-icon">🔗</span>
+                        </a>
+                        <div class="value" id="${data.id}_price" class="loading">Loading...</div>
+                        <div class="subtotal" id="${data.id}_subtotal"></div>
+                        <div class="price-change" id="${data.id}_change"></div>
+                        <div class="value" id="${data.id}_updated" style="font-size: 11px; color: #999;"></div>
+                        <button class="delete-coin" onclick="deleteCoin('${coinId}')">🗑️ Delete</button>
+                        <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/${data.symbol}_USDT', '_blank')">
+                            📊 Trade on Binance
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(holdingDiv);
+            });
+        }
+        
+        function renderSettings() {
+            const container = document.getElementById('settingsContainer');
+            container.innerHTML = '';
+            
+            Object.entries(holdings).forEach(([coinId, data]) => {
+                const settingDiv = document.createElement('div');
+                settingDiv.className = 'setting-item';
+                
+                settingDiv.innerHTML = `
+                    <label class="setting-label">${data.symbol} Amount</label>
+                    <input type="number" id="setting_${data.id}" class="setting-input" value="${data.amount}">
+                `;
+                
+                container.appendChild(settingDiv);
+            });
         }
 
         function saveSettings() {
-            const data = {
-                zec: parseFloat(document.getElementById('setting_zec').value) || 200,
-                btc: parseFloat(document.getElementById('setting_btc').value) || 1,
-                xrp: parseFloat(document.getElementById('setting_xrp').value) || 20,
-                sc: parseFloat(document.getElementById('setting_sc').value) || 5000
-            };
+            Object.keys(holdings).forEach(coinId => {
+                const inputId = `setting_${holdings[coinId].id}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement) {
+                    holdings[coinId].amount = parseFloat(inputElement.value) || 0;
+                }
+            });
             
-            localStorage.setItem('cryptoHoldings', JSON.stringify(data));
-            holdings['zcash'].amount = data.zec;
-            holdings['bitcoin'].amount = data.btc;
-            holdings['ripple'].amount = data.xrp;
-            holdings['siacoin'].amount = data.sc;
-            
-            updateDisplay();
+            localStorage.setItem('cryptoHoldings', JSON.stringify(holdings));
+            renderHoldings();
             updateValues();
             alert('Settings saved successfully!');
         }
 
         function resetSettings() {
-            document.getElementById('setting_zec').value = 200;
-            document.getElementById('setting_btc').value = 1;
-            document.getElementById('setting_xrp').value = 20;
-            document.getElementById('setting_sc').value = 5000;
+            holdings = {
+                'zcash': { amount: 200, id: 'zec', symbol: 'ZEC' },
+                'bitcoin': { amount: 1, id: 'btc', symbol: 'BTC' },
+                'ripple': { amount: 20, id: 'xrp', symbol: 'XRP' },
+                'siacoin': { amount: 5000, id: 'sc', symbol: 'SC' }
+            };
             
-            localStorage.removeItem('cryptoHoldings');
-            holdings['zcash'].amount = 200;
-            holdings['bitcoin'].amount = 1;
-            holdings['ripple'].amount = 20;
-            holdings['siacoin'].amount = 5000;
-            
-            updateDisplay();
+            localStorage.setItem('cryptoHoldings', JSON.stringify(holdings));
+            renderHoldings();
+            renderSettings();
             updateValues();
             alert('Settings reset to defaults!');
+        }
+        
+        function addNewCoin() {
+            const symbol = document.getElementById('new_coin_symbol').value.trim().toUpperCase();
+            const coinGeckoId = document.getElementById('new_coin_id').value.trim().toLowerCase();
+            const amount = parseFloat(document.getElementById('new_coin_amount').value) || 0;
+            
+            if (!symbol || !coinGeckoId || amount <= 0) {
+                alert('Please fill in all fields with valid values');
+                return;
+            }
+            
+            // Check if coin already exists
+            if (holdings[coinGeckoId]) {
+                alert('This coin already exists!');
+                return;
+            }
+            
+            // Generate a unique short ID for the coin
+            const shortId = symbol.toLowerCase().substring(0, 3) + '_' + Date.now().toString().slice(-4);
+            
+            holdings[coinGeckoId] = {
+                amount: amount,
+                id: shortId,
+                symbol: symbol
+            };
+            
+            localStorage.setItem('cryptoHoldings', JSON.stringify(holdings));
+            
+            // Clear inputs
+            document.getElementById('new_coin_symbol').value = '';
+            document.getElementById('new_coin_id').value = '';
+            document.getElementById('new_coin_amount').value = '';
+            
+            renderHoldings();
+            renderSettings();
+            updateValues();
+            alert(`${symbol} added successfully!`);
+        }
+        
+        function deleteCoin(coinId) {
+            const coinData = holdings[coinId];
+            if (confirm(`Are you sure you want to delete ${coinData.symbol}?`)) {
+                delete holdings[coinId];
+                localStorage.setItem('cryptoHoldings', JSON.stringify(holdings));
+                
+                // Clear intervals for this coin
+                if (updateIntervals[coinId]) {
+                    clearInterval(updateIntervals[coinId]);
+                    delete updateIntervals[coinId];
+                }
+                
+                renderHoldings();
+                renderSettings();
+                updateValues();
+            }
         }
 
         // Format price with appropriate decimal places
@@ -621,26 +707,40 @@
                     
                     // Display price with appropriate precision
                     // Only update price if valid (not 0)
+                    const priceElement = document.getElementById(`${data.id}_price`);
+                    const subtotalElement = document.getElementById(`${data.id}_subtotal`);
+                    
                     if (price === 0) {
                         // Don't update price or timestamp if price is 0
                         // Keep showing the old price if available
-                        if (!document.getElementById(`${data.id}_price`).innerText || 
-                            document.getElementById(`${data.id}_price`).innerText === 'Loading...') {
-                            document.getElementById(`${data.id}_price`).innerText = `(Price unavailable)`;
+                        if (!priceElement || !priceElement.innerText || 
+                            priceElement.innerText === 'Loading...') {
+                            if (priceElement) priceElement.innerText = `(Price unavailable)`;
                         }
+                        if (subtotalElement) subtotalElement.innerText = '';
                     } else {
                         // Update price only if we got a valid price
-                        document.getElementById(`${data.id}_price`).innerText = `($${formatPrice(priceInUSD)})`;
+                        if (priceElement) priceElement.innerText = `($${formatPrice(priceInUSD)})`;
+                        
+                        // Display subtotal
+                        if (subtotalElement) {
+                            subtotalElement.innerText = `Subtotal: $${holdingValue.toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}`;
+                        }
                         
                         // Update timestamp for this coin
                         lastUpdateTime[symbol] = Date.now();
-                        document.getElementById(`${data.id}_updated`).innerText = 
-                            formatElapsedTime(lastUpdateTime[symbol]);
+                        const updatedElement = document.getElementById(`${data.id}_updated`);
+                        if (updatedElement) {
+                            updatedElement.innerText = formatElapsedTime(lastUpdateTime[symbol]);
+                        }
                     }
                     
                     // Calculate and display price change
                     const changeElement = document.getElementById(`${data.id}_change`);
-                    if (price !== 0 && previousPrices[symbol] !== undefined && previousPrices[symbol] !== 0) {
+                    if (changeElement && price !== 0 && previousPrices[symbol] !== undefined && previousPrices[symbol] !== 0) {
                         const priceChange = price - previousPrices[symbol];
                         const percentChange = (priceChange / previousPrices[symbol]) * 100;
                         
@@ -651,7 +751,7 @@
                         } else {
                             changeElement.innerHTML = `<span style="color: #999;">— No change</span>`;
                         }
-                    } else {
+                    } else if (changeElement) {
                         changeElement.innerHTML = '';
                     }
                     
