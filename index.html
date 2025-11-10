@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>我的持仓Widget</title>
+    <title>Crypto Holdings Widget</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
             background: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
         }
         #holdingWidget {
             border: 2px solid #333;
@@ -91,72 +100,245 @@
         .link-icon {
             font-size: 12px;
         }
+        
+        /* Settings Panel */
+        #settingsPanel {
+            border: 2px solid #333;
+            padding: 20px;
+            width: 300px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .settings-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .setting-item {
+            margin-bottom: 15px;
+        }
+        .setting-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .setting-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .setting-input:focus {
+            outline: none;
+            border-color: #007368;
+            box-shadow: 0 0 5px rgba(0,115,104,0.3);
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-save {
+            background: #007368;
+            color: white;
+        }
+        .btn-save:hover {
+            background: #005c54;
+        }
+        .btn-reset {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
     </style>
 </head>
 <body>
-    <div id="holdingWidget">
-        <h3>💰 我的加密资产持仓 <span class="refresh-timer">刷新倒计时: <span id="countdown">30</span>s</span></h3>
-        
-        <div class="holding-item">
-            <div class="holding-item-left">
-                <a href="https://www.binance.com/trade/ZEC_USDT" target="_blank" class="holding-item-link">
-                    <span class="symbol">ZEC</span>: <span class="amount" id="zec_amount">200</span>
-                    <span class="link-icon">🔗</span>
-                </a>
-                <div class="value" id="zec_price" class="loading">加载中...</div>
-                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/ZEC_USDT', '_blank')">
-                    📊 在Binance交易
+    <div class="container">
+        <div id="holdingWidget">
+            <h3>
+                💰 My Crypto Holdings
+                <span class="refresh-timer">Refresh in: <span id="countdown">30</span>s</span>
+            </h3>
+            
+            <div class="holding-item">
+                <div class="holding-item-left">
+                    <a href="https://www.binance.com/trade/ZEC_USDT" target="_blank" class="holding-item-link">
+                        <span class="symbol">ZEC</span>: <span class="amount" id="zec_amount">200</span>
+                        <span class="link-icon">🔗</span>
+                    </a>
+                    <div class="value" id="zec_price" class="loading">Loading...</div>
+                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/ZEC_USDT', '_blank')">
+                        📊 Trade on Binance
+                    </div>
                 </div>
+            </div>
+
+            <div class="holding-item">
+                <div class="holding-item-left">
+                    <a href="https://www.binance.com/trade/BTC_USDT" target="_blank" class="holding-item-link">
+                        <span class="symbol">BTC</span>: <span class="amount" id="btc_amount">1</span>
+                        <span class="link-icon">🔗</span>
+                    </a>
+                    <div class="value" id="btc_price" class="loading">Loading...</div>
+                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/BTC_USDT', '_blank')">
+                        📊 Trade on Binance
+                    </div>
+                </div>
+            </div>
+
+            <div class="holding-item">
+                <div class="holding-item-left">
+                    <a href="https://www.binance.com/trade/XRP_USDT" target="_blank" class="holding-item-link">
+                        <span class="symbol">XRP</span>: <span class="amount" id="xrp_amount">20</span>
+                        <span class="link-icon">🔗</span>
+                    </a>
+                    <div class="value" id="xrp_price" class="loading">Loading...</div>
+                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/XRP_USDT', '_blank')">
+                        📊 Trade on Binance
+                    </div>
+                </div>
+            </div>
+
+            <div class="holding-item">
+                <div class="holding-item-left">
+                    <a href="https://www.binance.com/trade/SC_USDT" target="_blank" class="holding-item-link">
+                        <span class="symbol">SC</span>: <span class="amount" id="sc_amount">5000</span>
+                        <span class="link-icon">🔗</span>
+                    </a>
+                    <div class="value" id="sc_price" class="loading">Loading...</div>
+                    <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/SC_USDT', '_blank')">
+                        📊 Trade on Binance
+                    </div>
+                </div>
+            </div>
+
+            <div class="total">
+                Total Value (USD): <span id="total_value" class="loading">Loading...</span>
             </div>
         </div>
 
-        <div class="holding-item">
-            <div class="holding-item-left">
-                <a href="https://www.binance.com/trade/BTC_USDT" target="_blank" class="holding-item-link">
-                    <span class="symbol">BTC</span>: <span class="amount" id="btc_amount">1</span>
-                    <span class="link-icon">🔗</span>
-                </a>
-                <div class="value" id="btc_price" class="loading">加载中...</div>
-                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/BTC_USDT', '_blank')">
-                    📊 在Binance交易
-                </div>
+        <div id="settingsPanel">
+            <div class="settings-title">⚙️ Settings</div>
+            
+            <div class="setting-item">
+                <label class="setting-label">ZEC Amount</label>
+                <input type="number" id="setting_zec" class="setting-input" value="200">
             </div>
-        </div>
-
-        <div class="holding-item">
-            <div class="holding-item-left">
-                <a href="https://www.binance.com/trade/XRP_USDT" target="_blank" class="holding-item-link">
-                    <span class="symbol">XRP</span>: <span class="amount" id="xrp_amount">20</span>
-                    <span class="link-icon">🔗</span>
-                </a>
-                <div class="value" id="xrp_price" class="loading">加载中...</div>
-                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/XRP_USDT', '_blank')">
-                    📊 在Binance交易
-                </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">BTC Amount</label>
+                <input type="number" id="setting_btc" class="setting-input" value="1">
             </div>
-        </div>
-
-        <div class="holding-item">
-            <div class="holding-item-left">
-                <a href="https://www.binance.com/trade/SC_USDT" target="_blank" class="holding-item-link">
-                    <span class="symbol">SC</span>: <span class="amount" id="sc_amount">5000</span>
-                    <span class="link-icon">🔗</span>
-                </a>
-                <div class="value" id="sc_price" class="loading">加载中...</div>
-                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/SC_USDT', '_blank')">
-                    📊 在Binance交易
-                </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">XRP Amount</label>
+                <input type="number" id="setting_xrp" class="setting-input" value="20">
             </div>
-        </div>
-
-        <div class="total">
-            总价值（USD）：<span id="total_value" class="loading">加载中...</span>
+            
+            <div class="setting-item">
+                <label class="setting-label">SC Amount</label>
+                <input type="number" id="setting_sc" class="setting-input" value="5000">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-save" onclick="saveSettings()">Save</button>
+                <button class="btn btn-reset" onclick="resetSettings()">Reset</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const refreshInterval = 30000; // 30秒
+        const refreshInterval = 30000; // 30 seconds
         let countdownTime = 30;
+
+        // Default holdings
+        let holdings = {
+            'zcash': { amount: 200, id: 'zec' },
+            'bitcoin': { amount: 1, id: 'btc' },
+            'ripple': { amount: 20, id: 'xrp' },
+            'siacoin': { amount: 5000, id: 'sc' }
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const saved = localStorage.getItem('cryptoHoldings');
+            if (saved) {
+                const data = JSON.parse(saved);
+                holdings['zcash'].amount = data.zec || 200;
+                holdings['bitcoin'].amount = data.btc || 1;
+                holdings['ripple'].amount = data.xrp || 20;
+                holdings['siacoin'].amount = data.sc || 5000;
+                
+                updateDisplay();
+            }
+        }
+
+        // Update display with new amounts
+        function updateDisplay() {
+            document.getElementById('zec_amount').innerText = holdings['zcash'].amount;
+            document.getElementById('btc_amount').innerText = holdings['bitcoin'].amount;
+            document.getElementById('xrp_amount').innerText = holdings['ripple'].amount;
+            document.getElementById('sc_amount').innerText = holdings['siacoin'].amount;
+        }
+
+        // Save settings
+        function saveSettings() {
+            const data = {
+                zec: parseFloat(document.getElementById('setting_zec').value) || 200,
+                btc: parseFloat(document.getElementById('setting_btc').value) || 1,
+                xrp: parseFloat(document.getElementById('setting_xrp').value) || 20,
+                sc: parseFloat(document.getElementById('setting_sc').value) || 5000
+            };
+            
+            localStorage.setItem('cryptoHoldings', JSON.stringify(data));
+            
+            holdings['zcash'].amount = data.zec;
+            holdings['bitcoin'].amount = data.btc;
+            holdings['ripple'].amount = data.xrp;
+            holdings['siacoin'].amount = data.sc;
+            
+            updateDisplay();
+            updateValues();
+            alert('Settings saved successfully!');
+        }
+
+        // Reset to defaults
+        function resetSettings() {
+            document.getElementById('setting_zec').value = 200;
+            document.getElementById('setting_btc').value = 1;
+            document.getElementById('setting_xrp').value = 20;
+            document.getElementById('setting_sc').value = 5000;
+            
+            localStorage.removeItem('cryptoHoldings');
+            
+            holdings['zcash'].amount = 200;
+            holdings['bitcoin'].amount = 1;
+            holdings['ripple'].amount = 20;
+            holdings['siacoin'].amount = 5000;
+            
+            updateDisplay();
+            updateValues();
+            alert('Settings reset to defaults!');
+        }
 
         async function fetchPrice(symbol) {
             try {
@@ -165,45 +347,37 @@
                 return data[symbol].usd;
             } catch (error) {
                 console.error('Error fetching price:', error);
-                return 'N/A';
+                return 0;
             }
         }
 
         async function updateValues() {
-            const holdings = {
-                'zcash': { amount: 200, id: 'zec' },
-                'bitcoin': { amount: 1, id: 'btc' },
-                'ripple': { amount: 20, id: 'xrp' },
-                'siacoin': { amount: 5000, id: 'sc' }
-            };
-
             try {
                 let totalValue = 0;
                 
                 for (const [symbol, data] of Object.entries(holdings)) {
                     const price = await fetchPrice(symbol);
-                    const priceInCNY = price * 6.5;
+                    const priceInUSD = price;
                     const holdingValue = data.amount * price;
                     
-                    document.getElementById(`${data.id}_price`).innerText = `(¥${priceInCNY.toFixed(2)})`;
+                    document.getElementById(`${data.id}_price`).innerText = `($${priceInUSD.toFixed(2)})`;
                     totalValue += holdingValue;
                 }
 
-                const totalValueCNY = totalValue * 6.5;
-                document.getElementById('total_value').innerText = '¥' + totalValueCNY.toLocaleString('zh-CN', {
+                document.getElementById('total_value').innerText = '$' + totalValue.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 });
                 
-                // 重置倒计时
+                // Reset countdown
                 countdownTime = 30;
             } catch (error) {
                 console.error('Error updating values:', error);
-                document.getElementById('total_value').innerText = '获取失败';
+                document.getElementById('total_value').innerText = 'Error loading';
             }
         }
 
-        // 倒计时功能
+        // Countdown timer
         function startCountdown() {
             const timer = setInterval(() => {
                 countdownTime--;
@@ -217,7 +391,8 @@
             }, 1000);
         }
 
-        // 初始化加载
+        // Initialize
+        loadSettings();
         updateValues();
         startCountdown();
     </script>
