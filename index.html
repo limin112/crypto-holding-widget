@@ -242,7 +242,6 @@
             <h3>
                 💰 My Crypto Holdings
                 <div style="display: flex; align-items: center;">
-                    <span class="refresh-timer">Refresh in: <span id="countdown">30</span>s</span>
                     <button class="refresh-button" onclick="manualRefresh()">🔄 Refresh Now</button>
                 </div>
             </h3>
@@ -255,6 +254,7 @@
                     </a>
                     <div class="value" id="zec_price" class="loading">Loading...</div>
                     <div class="price-change" id="zec_change"></div>
+                    <div class="value" id="zec_updated" style="font-size: 11px; color: #999;"></div>
                     <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/ZEC_USDT', '_blank')">
                         📊 Trade on Binance
                     </div>
@@ -269,6 +269,7 @@
                     </a>
                     <div class="value" id="btc_price" class="loading">Loading...</div>
                     <div class="price-change" id="btc_change"></div>
+                    <div class="value" id="btc_updated" style="font-size: 11px; color: #999;"></div>
                     <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/BTC_USDT', '_blank')">
                         📊 Trade on Binance
                     </div>
@@ -283,6 +284,7 @@
                     </a>
                     <div class="value" id="xrp_price" class="loading">Loading...</div>
                     <div class="price-change" id="xrp_change"></div>
+                    <div class="value" id="xrp_updated" style="font-size: 11px; color: #999;"></div>
                     <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/XRP_USDT', '_blank')">
                         📊 Trade on Binance
                     </div>
@@ -297,6 +299,7 @@
                     </a>
                     <div class="value" id="sc_price" class="loading">Loading...</div>
                     <div class="price-change" id="sc_change"></div>
+                    <div class="value" id="sc_updated" style="font-size: 11px; color: #999;"></div>
                     <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/SC_USDT', '_blank')">
                         📊 Trade on Binance
                     </div>
@@ -340,9 +343,7 @@
     </div>
 
     <script>
-        const refreshInterval = 30000;
         const USD_TO_CNY_RATE = 7.2; // Approximate exchange rate
-        let countdownTime = 30;
         let holdings = {
             'zcash': { amount: 200, id: 'zec' },
             'bitcoin': { amount: 1, id: 'btc' },
@@ -350,6 +351,8 @@
             'siacoin': { amount: 5000, id: 'sc' }
         };
         let previousPrices = {}; // Store previous prices for comparison
+        let lastUpdateTime = {}; // Store last update timestamp for each coin
+        let updateIntervals = {}; // Store interval timers for each coin
 
         function loadSettings() {
             const saved = localStorage.getItem('cryptoHoldings');
@@ -428,6 +431,42 @@
                 return price.toFixed(2);
             }
         }
+        
+        // Format elapsed time since last update
+        function formatElapsedTime(timestamp) {
+            if (!timestamp) return '';
+            
+            const now = Date.now();
+            const elapsed = Math.floor((now - timestamp) / 1000); // seconds
+            
+            if (elapsed < 60) {
+                return `Updated ${elapsed}s ago`;
+            } else if (elapsed < 3600) {
+                const minutes = Math.floor(elapsed / 60);
+                return `Updated ${minutes}m ago`;
+            } else {
+                const hours = Math.floor(elapsed / 3600);
+                return `Updated ${hours}h ago`;
+            }
+        }
+        
+        // Start updating elapsed time display for all coins
+        function startElapsedTimeUpdates() {
+            // Clear any existing intervals
+            Object.values(updateIntervals).forEach(interval => clearInterval(interval));
+            updateIntervals = {};
+            
+            // Update elapsed time for each coin every second
+            Object.keys(holdings).forEach(symbol => {
+                const data = holdings[symbol];
+                updateIntervals[symbol] = setInterval(() => {
+                    if (lastUpdateTime[symbol]) {
+                        document.getElementById(`${data.id}_updated`).innerText = 
+                            formatElapsedTime(lastUpdateTime[symbol]);
+                    }
+                }, 1000);
+            });
+        }
 
         async function fetchPrice(symbol) {
             try {
@@ -459,11 +498,22 @@
                     const holdingValue = data.amount * price;
                     
                     // Display price with appropriate precision
-                    // Show error message if price is 0 (API failed or coin not found)
+                    // Only update price if valid (not 0)
                     if (price === 0) {
-                        document.getElementById(`${data.id}_price`).innerText = `(Price unavailable)`;
+                        // Don't update price or timestamp if price is 0
+                        // Keep showing the old price if available
+                        if (!document.getElementById(`${data.id}_price`).innerText || 
+                            document.getElementById(`${data.id}_price`).innerText === 'Loading...') {
+                            document.getElementById(`${data.id}_price`).innerText = `(Price unavailable)`;
+                        }
                     } else {
+                        // Update price only if we got a valid price
                         document.getElementById(`${data.id}_price`).innerText = `($${formatPrice(priceInUSD)})`;
+                        
+                        // Update timestamp for this coin
+                        lastUpdateTime[symbol] = Date.now();
+                        document.getElementById(`${data.id}_updated`).innerText = 
+                            formatElapsedTime(lastUpdateTime[symbol]);
                     }
                     
                     // Calculate and display price change
@@ -506,8 +556,6 @@
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }) + ' CNY';
-                
-                countdownTime = 30;
             } catch (error) {
                 console.error('Error updating values:', error);
                 document.getElementById('total_value').innerText = 'Error loading';
@@ -518,22 +566,9 @@
             updateValues();
         }
 
-        function startCountdown() {
-            const timer = setInterval(() => {
-                countdownTime--;
-                document.getElementById('countdown').innerText = countdownTime;
-                
-                if (countdownTime <= 0) {
-                    clearInterval(timer);
-                    updateValues();
-                    startCountdown();
-                }
-            }, 1000);
-        }
-
         loadSettings();
         updateValues();
-        startCountdown();
+        startElapsedTimeUpdates(); // Start the elapsed time counter for all coins
     </script>
 </body>
 </html>
