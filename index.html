@@ -11,7 +11,7 @@
         #holdingWidget {
             border: 2px solid #333;
             padding: 20px;
-            width: 400px;
+            width: 450px;
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -19,23 +19,62 @@
         h3 {
             margin-top: 0;
             color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .refresh-timer {
+            font-size: 12px;
+            color: #999;
+            font-weight: normal;
         }
         .holding-item {
-            margin: 15px 0;
+            margin: 12px 0;
             padding: 10px;
             background: #f9f9f9;
             border-left: 4px solid #007368;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .holding-item-left {
+            flex: 1;
+        }
+        .holding-item-link {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .holding-item-link:hover {
+            text-decoration: underline;
         }
         .symbol {
             font-weight: bold;
             font-size: 18px;
             color: #007368;
         }
+        .amount {
+            font-weight: bold;
+            color: #333;
+            margin: 0 8px;
+        }
         .value {
             color: #666;
-            font-size: 14px;
-            margin-left: 10px;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .exchange-link {
+            color: #0066cc;
+            font-size: 11px;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .exchange-link:hover {
+            text-decoration: underline;
         }
         .total {
             margin-top: 20px;
@@ -49,25 +88,76 @@
             color: #999;
             font-style: italic;
         }
+        .link-icon {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div id="holdingWidget">
-        <h3>💰 我的加密资产持仓</h3>
+        <h3>💰 我的加密资产持仓 <span class="refresh-timer">刷新倒计时: <span id="countdown">30</span>s</span></h3>
+        
         <div class="holding-item">
-            <span class="symbol">ZEC</span>: <span id="zec_amount">200</span>
-            <span class="value" id="zec_price" class="loading">加载中...</span>
+            <div class="holding-item-left">
+                <a href="https://www.binance.com/trade/ZEC_USDT" target="_blank" class="holding-item-link">
+                    <span class="symbol">ZEC</span>: <span class="amount" id="zec_amount">200</span>
+                    <span class="link-icon">🔗</span>
+                </a>
+                <div class="value" id="zec_price" class="loading">加载中...</div>
+                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/ZEC_USDT', '_blank')">
+                    📊 在Binance交易
+                </div>
+            </div>
         </div>
+
         <div class="holding-item">
-            <span class="symbol">BTC</span>: <span id="btc_amount">1</span>
-            <span class="value" id="btc_price" class="loading">加载中...</span>
+            <div class="holding-item-left">
+                <a href="https://www.binance.com/trade/BTC_USDT" target="_blank" class="holding-item-link">
+                    <span class="symbol">BTC</span>: <span class="amount" id="btc_amount">1</span>
+                    <span class="link-icon">🔗</span>
+                </a>
+                <div class="value" id="btc_price" class="loading">加载中...</div>
+                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/BTC_USDT', '_blank')">
+                    📊 在Binance交易
+                </div>
+            </div>
         </div>
+
+        <div class="holding-item">
+            <div class="holding-item-left">
+                <a href="https://www.binance.com/trade/XRP_USDT" target="_blank" class="holding-item-link">
+                    <span class="symbol">XRP</span>: <span class="amount" id="xrp_amount">20</span>
+                    <span class="link-icon">🔗</span>
+                </a>
+                <div class="value" id="xrp_price" class="loading">加载中...</div>
+                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/XRP_USDT', '_blank')">
+                    📊 在Binance交易
+                </div>
+            </div>
+        </div>
+
+        <div class="holding-item">
+            <div class="holding-item-left">
+                <a href="https://www.binance.com/trade/SC_USDT" target="_blank" class="holding-item-link">
+                    <span class="symbol">SC</span>: <span class="amount" id="sc_amount">5000</span>
+                    <span class="link-icon">🔗</span>
+                </a>
+                <div class="value" id="sc_price" class="loading">加载中...</div>
+                <div class="exchange-link" onclick="window.open('https://www.binance.com/trade/SC_USDT', '_blank')">
+                    📊 在Binance交易
+                </div>
+            </div>
+        </div>
+
         <div class="total">
             总价值（USD）：<span id="total_value" class="loading">加载中...</span>
         </div>
     </div>
 
     <script>
+        const refreshInterval = 30000; // 30秒
+        let countdownTime = 30;
+
         async function fetchPrice(symbol) {
             try {
                 const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`);
@@ -80,32 +170,56 @@
         }
 
         async function updateValues() {
-            const zecAmount = 200;
-            const btcAmount = 1;
+            const holdings = {
+                'zcash': { amount: 200, id: 'zec' },
+                'bitcoin': { amount: 1, id: 'btc' },
+                'ripple': { amount: 20, id: 'xrp' },
+                'siacoin': { amount: 5000, id: 'sc' }
+            };
 
             try {
-                const zecPrice = await fetchPrice('zcash');
-                const btcPrice = await fetchPrice('bitcoin');
+                let totalValue = 0;
+                
+                for (const [symbol, data] of Object.entries(holdings)) {
+                    const price = await fetchPrice(symbol);
+                    const priceInCNY = price * 6.5;
+                    const holdingValue = data.amount * price;
+                    
+                    document.getElementById(`${data.id}_price`).innerText = `(¥${priceInCNY.toFixed(2)})`;
+                    totalValue += holdingValue;
+                }
 
-                document.getElementById('zec_price').innerText = `(¥${(zecPrice * 6.5).toFixed(2)})`;
-                document.getElementById('btc_price').innerText = `(¥${(btcPrice * 6.5).toFixed(2)})`;
-
-                const totalValue = zecAmount * zecPrice + btcAmount * btcPrice;
                 const totalValueCNY = totalValue * 6.5;
                 document.getElementById('total_value').innerText = '¥' + totalValueCNY.toLocaleString('zh-CN', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 });
+                
+                // 重置倒计时
+                countdownTime = 30;
             } catch (error) {
                 console.error('Error updating values:', error);
                 document.getElementById('total_value').innerText = '获取失败';
             }
         }
 
+        // 倒计时功能
+        function startCountdown() {
+            const timer = setInterval(() => {
+                countdownTime--;
+                document.getElementById('countdown').innerText = countdownTime;
+                
+                if (countdownTime <= 0) {
+                    clearInterval(timer);
+                    updateValues();
+                    startCountdown();
+                }
+            }, 1000);
+        }
+
         // 初始化加载
         updateValues();
-        // 每30秒自动刷新一次
-        setInterval(updateValues, 30000);
+        startCountdown();
     </script>
 </body>
 </html>
