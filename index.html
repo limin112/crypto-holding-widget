@@ -465,10 +465,10 @@
     <script>
         const USD_TO_CNY_RATE = 7.2; // Approximate exchange rate
         let holdings = {
-            'zcash': { amount: 200, id: 'zec', symbol: 'ZEC' },
-            'bitcoin': { amount: 1, id: 'btc', symbol: 'BTC' },
-            'ripple': { amount: 20, id: 'xrp', symbol: 'XRP' },
-            'siacoin': { amount: 5000, id: 'sc', symbol: 'SC' }
+            'zcash': { amount: 220, id: 'zec', symbol: 'ZEC' },
+            'bitcoin': { amount: 1.04, id: 'btc', symbol: 'BTC' },
+            'ripple': { amount: 5000, id: 'xrp', symbol: 'XRP' },
+            'siacoin': { amount: 2000000, id: 'sc', symbol: 'SC' }
         };
         let previousPrices = {}; // Store previous prices for comparison
         let lastUpdateTime = {}; // Store last update timestamp for each coin
@@ -554,10 +554,10 @@
 
         function resetSettings() {
             holdings = {
-                'zcash': { amount: 200, id: 'zec', symbol: 'ZEC' },
-                'bitcoin': { amount: 1, id: 'btc', symbol: 'BTC' },
-                'ripple': { amount: 20, id: 'xrp', symbol: 'XRP' },
-                'siacoin': { amount: 5000, id: 'sc', symbol: 'SC' }
+                'zcash': { amount: 220, id: 'zec', symbol: 'ZEC' },
+                'bitcoin': { amount: 1.04, id: 'btc', symbol: 'BTC' },
+                'ripple': { amount: 5000, id: 'xrp', symbol: 'XRP' },
+                'siacoin': { amount: 2000000, id: 'sc', symbol: 'SC' }
             };
             
             localStorage.setItem('cryptoHoldings', JSON.stringify(holdings));
