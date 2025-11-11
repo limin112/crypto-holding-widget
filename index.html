@@ -676,7 +676,10 @@
             });
         }
 
-        async function fetchPrice(symbol) {
+        async function fetchPrice(symbol, retryCount = 0) {
+            const maxRetries = 5; // 1s, 2s, 4s, 8s, 16s
+            const delays = [1000, 2000, 4000, 8000, 16000]; // Exponential backoff delays in milliseconds
+            
             try {
                 const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`);
                 const data = await res.json();
@@ -684,14 +687,32 @@
                 if (!data[symbol]) {
                     console.warn(`Price data not found for ${symbol}`);
                     console.warn(`API Response:`, data);
+                    
+                    // Retry with exponential backoff if we haven't exceeded max retries
+                    if (retryCount < maxRetries) {
+                        const delay = delays[retryCount];
+                        console.log(`Retrying ${symbol} in ${delay/1000}s... (attempt ${retryCount + 1}/${maxRetries})`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchPrice(symbol, retryCount + 1);
+                    }
+                    
                     return 0;
                 }
                 
                 const price = data[symbol].usd || 0;
-                console.log(`${symbol}: $${price}`);
+                console.log(`${symbol}: $${price}${retryCount > 0 ? ` (succeeded after ${retryCount} retries)` : ''}`);
                 return price;
             } catch (error) {
                 console.error(`Error fetching price for ${symbol}:`, error);
+                
+                // Retry with exponential backoff if we haven't exceeded max retries
+                if (retryCount < maxRetries) {
+                    const delay = delays[retryCount];
+                    console.log(`Retrying ${symbol} in ${delay/1000}s after error... (attempt ${retryCount + 1}/${maxRetries})`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchPrice(symbol, retryCount + 1);
+                }
+                
                 return 0;
             }
         }
